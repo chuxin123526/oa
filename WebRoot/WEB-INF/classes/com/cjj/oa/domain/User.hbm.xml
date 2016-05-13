@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.cjj.oa.domain">
+
+	<class name="User">
+		<id name="id">
+            <generator class="native"/>
+		</id>
+		<property name="loginName"/>
+		<property name="password"/>
+		<property name="name"/>
+		<property name="gender"/>
+		<property name="phoneNumber"/>
+		<property name="email"/>
+		<property name="description"/>
+		
+		
+		
+		<many-to-one name="department" class="Department" column="department_id"></many-to-one>
+		
+		<set name="roles" table="role_user" lazy="false" >
+		<key column="user_id"></key>
+		<many-to-many class="Role" column="role_id"></many-to-many>
+		</set>
+		
+		<set name="topics">
+		<key column="author_id"></key>
+		<one-to-many class="Topic"/>
+		</set>
+		
+		<set name="replys">
+		<key column="author_id"></key>
+		<one-to-many class="Reply"/>
+		</set>
+		
+	</class>
+	
+</hibernate-mapping>

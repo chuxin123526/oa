@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.cjj.oa.domain">
+
+	<class name="Topic" >
+		<id name="id">
+            <generator class="native"/>
+		</id>
+		<property name="title"/>
+		<property name="content" type="text"></property>
+		<property name="faceIcon" ></property>
+		<property name="postTime" type="timestamp"></property>
+		<property name="ipAddress" ></property>
+		
+		<property name="type" type = "integer" ></property>
+		<property name="replyCount"></property>
+		<property name="lastUpdateTime" type="timestamp"></property>
+		
+		
+		<many-to-one name="lastReply" unique="true" class="Reply" column="lastReply_id"></many-to-one>
+		<many-to-one  name="author" class="User" column="author_id"></many-to-one>
+		<many-to-one name="forum" class="Forum" column="forum_id"></many-to-one>
+		
+		<set name="replys">
+		<key column="topic_id"></key>
+		<one-to-many class="Reply"/>
+		</set>
+		
+	</class>
+	
+</hibernate-mapping>

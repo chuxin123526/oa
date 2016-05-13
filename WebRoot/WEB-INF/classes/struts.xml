@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- 配置为开发模式 -->
+    <constant name="struts.devMode" value="true" />
+	<!-- 配置扩展名为action -->
+    <constant name="struts.action.extension" value="action" />
+
+	<constant name="struts.ui.theme" value="simple"></constant>
+
+	<constant name="struts.i18n.encoding" value="UTF-8"></constant>
+	
+
+    <package name="default" namespace="/" extends="struts-default">
+		
+		
+		<interceptors>
+				<interceptor name="validatePrivilege" class="com.cjj.oa.interceptor.ValidatePrivilegeInterceptor"></interceptor>
+				
+				<interceptor-stack name="defaultStack">
+				<interceptor-ref name="validatePrivilege" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+	
+		<global-results>
+		<result name = "loginUI" type="redirect">/loginUI.jsp</result>
+		<result name = "noPrivilege" type = "redirect" >/noPrivilege.jsp</result>
+		</global-results>
+			
+		
+		<!-- 测试用的action，当与Spring整合后，class属性写的就是Spring中bean的名称 -->
+		<action name="test" class="testAction">
+			<result name="success">/test.jsp</result>
+		</action>
+	
+
+		<!-- 岗位管理 -->
+		<action name="roleAction_*" class="roleAction" method="{1}">
+			<result name="list">/WEB-INF/jsp/roleAction/list.jsp</result>
+			<result name="addUI">/WEB-INF/jsp/roleAction/addUI.jsp</result>
+			<result name="updateUI">/WEB-INF/jsp/roleAction/updateUI.jsp</result>
+			<result name="toList" type="redirectAction">roleAction_list</result>
+			<result name = "setPrivilegeUI" >/WEB-INF/jsp/roleAction/setPrivilegeUI.jsp</result>
+		</action>
+		
+		<action name="departmentAction_*" class="departmentAction" method = "{1}">
+			<result name = "list">/WEB-INF/jsp/departmentAction/list.jsp</result>
+			<result name = "addUI">/WEB-INF/jsp/departmentAction/addUI.jsp</result>
+			<result name = "updateUI">/WEB-INF/jsp/departmentAction/updateUI.jsp</result>
+			<result name="toList" type="redirectAction">departmentAction_list?parentId=${parentId}</result>	
+		</action>
+	
+		<!-- 用户管理 -->
+		<action name="userAction_*" class="userAction" method="{1}">
+		<result name = "list">/WEB-INF/jsp/userAction/list.jsp</result>
+		<result name = "addUI">/WEB-INF/jsp/userAction/addUI.jsp</result>
+		<result name = "updateUI">/WEB-INF/jsp/userAction/updateUI.jsp</result>
+		<result name = "toList" type="redirectAction">userAction_list</result>
+		<result name = "index" type = "redirectAction" >userAction_index</result>
+		<result name = "toIndex">/WEB-INF/jsp/homeAction/index.jsp</result>
+		</action>
+		
+		<!-- 准备首页 -->
+		<action name="homeAction_*" class = "homeAction" method = "{1}">
+		<result name = "{1}">/WEB-INF/jsp/homeAction/{1}.jsp</result>	
+		</action>
+		
+		<action name="forumManagementAction_*" class = "forumManagementAction" method = "{1}">
+		<result name="list">/WEB-INF/jsp/forumManagementAction/list.jsp</result>
+		<result name="addUI">/WEB-INF/jsp/forumManagementAction/addUI.jsp</result>
+		<result name="updateUI">/WEB-INF/jsp/forumManagementAction/updateUI.jsp</result>
+		<result name="toList" type = "redirectAction">forumManagementAction_list</result>
+		</action>
+		
+		<action name="forumAction_*" class = "forumAction" method = "{1}">
+		<result name="list">/WEB-INF/jsp/forumAction/list.jsp</result>
+		<result name="show">/WEB-INF/jsp/forumAction/show.jsp</result>
+		</action>
+		
+		<action name="topicAction_*" class = "topicAction" method = "{1}">
+		<result name="addUI">/WEB-INF/jsp/topicAction/addUI.jsp</result>
+		<result name="show">/WEB-INF/jsp/topicAction/show.jsp</result>
+		<result name="toShow" type="redirectAction">topicAction_show?topic.id=${topic.id}</result>
+		</action>
+
+		<action name="replyAction_*" class = "replyAction" method = "{1}">
+		<result name="addUI">/WEB-INF/jsp/replyAction/addUI.jsp</result>
+		<result name="toTopic" type="redirectAction">topicAction_show?topic.id=${topic.id}</result>
+		</action>
+
+
+    </package>
+
+</struts>
